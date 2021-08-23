@@ -24,15 +24,15 @@ export interface BreadcrumbRenderer {
     /**
      * Renders the given breadcrumb. If `onClick` is given, it is called on breadcrumb click.
      */
-    render(breadcrumb: Breadcrumb, onClick?: (breadcrumb: Breadcrumb, event: React.MouseEvent) => void): React.ReactNode;
+    render(breadcrumb: Breadcrumb, onMouseDown?: (breadcrumb: Breadcrumb, event: React.MouseEvent) => void): React.ReactNode;
 }
 
 @injectable()
 export class DefaultBreadcrumbRenderer implements BreadcrumbRenderer {
-    render(breadcrumb: Breadcrumb, onClick?: (breadcrumb: Breadcrumb, event: React.MouseEvent) => void): React.ReactNode {
+    render(breadcrumb: Breadcrumb, onMouseDown?: (breadcrumb: Breadcrumb, event: React.MouseEvent) => void): React.ReactNode {
         return <li key={breadcrumb.id} title={breadcrumb.longLabel}
-            className={Breadcrumbs.Styles.BREADCRUMB_ITEM + (!onClick ? '' : ' ' + Breadcrumbs.Styles.BREADCRUMB_ITEM_HAS_POPUP)}
-            onClick={event => onClick && onClick(breadcrumb, event)}
+            className={Breadcrumbs.Styles.BREADCRUMB_ITEM + (!onMouseDown ? '' : ' ' + Breadcrumbs.Styles.BREADCRUMB_ITEM_HAS_POPUP)}
+            onMouseDown={event => onMouseDown && onMouseDown(breadcrumb, event)}
             tabIndex={0}
             data-breadcrumb-id={breadcrumb.id}
         >

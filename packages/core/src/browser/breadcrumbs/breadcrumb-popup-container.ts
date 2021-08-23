@@ -72,32 +72,15 @@ export class BreadcrumbPopupContainer implements Disposable {
         result.style.left = `${position.x}px`;
         result.style.top = `${position.y}px`;
         result.tabIndex = 0;
-        result.onblur = event => this.onBlur(event, this.breadcrumbId);
+        result.addEventListener('focusout', this.onFocusOut);
         this.parent.appendChild(result);
         return result;
     }
 
-    protected onBlur = (event: FocusEvent, breadcrumbId: string) => {
-        if (event.relatedTarget && event.relatedTarget instanceof HTMLElement) {
-            // event.relatedTarget is the element that has the focus after this popup looses the focus.
-            // If a breadcrumb was clicked the following holds the breadcrumb ID of the clicked breadcrumb.
-            const clickedBreadcrumbId = event.relatedTarget.getAttribute('data-breadcrumb-id');
-            if (clickedBreadcrumbId && clickedBreadcrumbId === breadcrumbId) {
-                // This is a click on the breadcrumb that has openend this popup.
-                // We do not close this popup here but let the click event of the breadcrumb handle this instead
-                // because it needs to know that this popup is open to decide if it just closes this popup or
-                // also opens a new popup.
-                return;
-            }
-            if (this._container.contains(event.relatedTarget)) {
-                // A child element gets focus. Set the focus to the container again.
-                // Otherwise the popup would not be closed when elements outside the popup get the focus.
-                // A popup content should not rely on getting a focus.
-                this._container.focus();
-                return;
-            }
+    protected onFocusOut = (event: FocusEvent) => {
+        if (!(event.relatedTarget instanceof Element) || !this._container.contains(event.relatedTarget)) {
+            this.dispose();
         }
-        this.dispose();
     };
 
     protected escFunction = (event: KeyboardEvent) => {

@@ -80,6 +80,7 @@ export class FilepathBreadcrumbsContribution implements BreadcrumbsContribution 
                         if (targetNode && SelectableTreeNode.is(targetNode)) {
                             model.selectNode(targetNode);
                         }
+                        this.breadcrumbsFileTreeWidget.activate();
                     }
                 });
                 return {

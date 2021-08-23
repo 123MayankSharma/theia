@@ -137,6 +137,7 @@ export class OutlineBreadcrumbsContribution implements BreadcrumbsContribution {
         this.outlineView.model.selectNode(node);
         this.outlineView.model.collapseAll();
         Widget.attach(this.outlineView, parent);
+        this.outlineView.activate();
         toDisposeOnHide.pushAll([
             this.outlineView.model.onExpansionChanged(expandedNode => SelectableTreeNode.is(expandedNode) && this.outlineView.model.selectNode(expandedNode)),
             Disposable.create(() => {
